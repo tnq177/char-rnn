@@ -28,6 +28,11 @@ class DataFeeder(object):
 		self.tensor_path 	= file_path + ".npy"
 		self.vocab_path 	= file_path + ".vocab.pkl"
 
+		if not os.path.exists(self.file_path):
+			msg = "Data file not exists"
+			logger.error(msg)
+			sys.exit(msg)
+
 		self.vocab 	= vocab
 		self.tensor = None
 		self.x_batches = None
@@ -101,9 +106,11 @@ class DataFeeder(object):
 
 
 if __name__ == "__main__":
-	data_feeder = DataFeeder("./test/train.txt", 40, 200)
+	data_feeder = DataFeeder("./data/old_kimdung/train.txt", 80, 80)
+	print(data_feeder.num_batches)
 	ivocab = {idx: ch for ch, idx in data_feeder.vocab.items()}
 	for i in xrange(data_feeder.num_batches):
 		x, y = data_feeder.next_batch()
-		for seq in x:
-			print(u"".join(map(ivocab.get, seq)))
+		print(x, y)
+		# for seq in x:
+		# 	print(u"".join(map(ivocab.get, seq)))
