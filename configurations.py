@@ -5,7 +5,7 @@ def get_config_kimdung():
 	config["rnn_type"]		= "gru"
 	config["batch_size"]	= 80
 	config["seq_length"]	= 80
-	config["num_epochs"]	= 100
+	config["num_epochs"]	= 30
 	config["grad_clip"]		= 5.
 	config["lr"]			= 0.002
 	config["decay_rate"]	= 0.97
