@@ -43,6 +43,10 @@ class Model(object):
 		self.is_train   = config["is_train"]
 		self.reuse 		= config["reuse"]
 
+		if self.infer:
+			self.batch_size = 1
+			self.seq_length = 1
+
 		if self.rnn_type == "rnn":
 			cell_fn = rnn_cell.BasicRNNCell
 		elif self.rnn_type == "gru":
@@ -113,7 +117,7 @@ class Model(object):
 			optimizer 		= tf.train.AdamOptimizer(self.lr)
 			self.train_op 	= optimizer.apply_gradients(zip(grads, tvars))
 
-	def sample(self, sess, chars, vocab, num=500, prime=" ", sampling_type=1):
+	def sample(self, sess, ivocab, vocab, num=500, prime=" ", sampling_type=1):
 		state = self.cell.zero_state(1, tf.float32).eval()
 		for char in prime[:-1]:
 			x = numpy.zeros((1, 1))
@@ -146,7 +150,7 @@ class Model(object):
 			else:
 				sample = weighted_pick(p)
 
-			pred = chars[sample]
+			pred = ivocab[sample]
 			ret += pred
 			char = pred 
 

@@ -5,11 +5,12 @@ import time
 import pprint
 import argparse
 import configurations 
+import numpy
 import tensorflow as tf
 from model import Model
 from reader import DataFeeder
 from common_utils import get_logger
-import numpy
+import cPickle as pickle
 
 logger = get_logger()
 
@@ -115,3 +116,10 @@ if __name__ == "__main__":
 					checkpoint_path = os.path.join(train_config["save_to"], "model.ckpt")
 					saver.save(sess, checkpoint_path, global_step=e)
 					logger.info("Model saved to {}".format(checkpoint_path))
+
+					# Save config 
+					train_config_path = os.path.join(train_config["save_to"], "config.pkl")
+					open(train_config_path, "w").close()
+					with open(train_config_path, "wb") as f:
+						pickle.dump(train_config, f)
+					logger.info("Model config saved to {}".format(train_config_path))
